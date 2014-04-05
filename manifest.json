@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "ExtraJS",
+  "description": "This extension injects extra JavaScript (e.g. to help with development and debugging) into every page.",
+  "version": "1.0",
+  "permissions":[
+    "storage"
+  ],
+  "background": {
+    "persistent": false,
+    "scripts": ["jquery.min.js","bg.js"]
+  },
+  "options_page": "options.html",
+  "content_scripts":[
+    {
+      "matches": ["*://*/*"],
+      "run_at": "document_end",
+      "js": ["content.js"]
+    }
+  ]
+}
