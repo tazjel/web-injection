@@ -11,18 +11,34 @@ $(document).ready(function(){
       autofocus: true
     });
     editor.setValue(items.code);
+    editor.on('change', function(){
+      $('#save').removeClass('saved').addClass('dirty');
+    });
   });
   
-  $('#btnSave').click(function(){
+  function say(msg){
+    $('#msg').text(msg);
+    $('#msg').fadeIn();
+    setTimeout(function() {
+      $('#msg').fadeOut();
+    }, 1850);
+  }
+  
+  $('#save').click(function(){
     chrome.storage.sync.set({
       code: editor.getValue()
     }, function() {
-      $('#msgStatus').text("Content saved.");
-      $('#msgStatus').fadeIn();
-      setTimeout(function() {
-        $('#msgStatus').fadeOut();
-      }, 1250);
-      
+      $('#save').removeClass('dirty').addClass('saved');
+      say("Whew! That was a close one.");
     });
   });
+  
+  $('#beautify').click(function(){
+    editor.setValue(js_beautify(editor.getValue(), {
+      indent_size: 2,
+      preserve_newlines: false
+    }));
+    say("Isn't it beautiful?");
+  });
+  
 });
